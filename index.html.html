@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Fasih — Web Development Portfolio</title>
+  <meta name="description" content="Fasih designs and engineers custom websites, web apps, and storefronts for founders and product teams. Modern, fast, on-brand.">
+  <style>
+    :root{
+      --bg:#0a0b10;
+      --bg2:#0f1018;
+      --panel:rgba(255,255,255,.04);
+      --panelStrong:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.10);
+      --lineStrong:rgba(255,255,255,.18);
+      --ink:#f3f4f8;
+      --muted:#9aa0b4;
+      --muted2:#6b7088;
+      --accent:#a8ff5a;
+      --accent2:#7af0ff;
+      --accentInk:#0a0b10;
+      --serif:"Fraunces",ui-serif,Georgia,"Times New Roman",serif;
+      --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg);scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background:
+        radial-gradient(1100px 700px at 80% -10%, color-mix(in srgb,var(--accent) 18%,transparent), transparent 60%),
+        radial-gradient(900px 600px at -10% 30%, color-mix(in srgb,var(--accent2) 12%,transparent), transparent 55%),
+        var(--bg);
+      background-attachment:fixed;
+      overflow-x:hidden;
+    }
+    button,a,input,textarea,select{font:inherit;color:inherit}
+    a{color:inherit;text-decoration:none}
+    button{border:0;background:none;cursor:pointer}
+    input,textarea{
+      width:100%;
+      padding:14px 16px;
+      background:transparent;
+      border:1px solid var(--line);
+      border-radius:12px;
+      color:var(--ink);
+      font-family:inherit;
+      font-size:15px;
+      transition:border-color .2s ease, background .2s ease;
+    }
+    input:focus,textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+      background:rgba(168,255,90,.04);
+    }
+    label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .shell{width:min(1280px,calc(100% - 40px));margin:auto;padding:0 0 80px;position:relative}
+
+    /* Top bar */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:22px 0;position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(18px) saturate(140%);
+      background:linear-gradient(180deg,rgba(10,11,16,.85),rgba(10,11,16,.4));
+      border-bottom:1px solid var(--line);
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
+    .brand i{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));position:relative;display:inline-block}
+    .brand i::after{content:"";position:absolute;inset:5px;border-radius:4px;background:var(--bg)}
+    .brand small{color:var(--muted);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-left:6px}
+    .nav{display:flex;gap:28px;font-size:13px;color:var(--muted)}
+    .nav a{position:relative;padding:4px 0;transition:color .2s ease}
+    .nav a:hover{color:var(--ink)}
+    .nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+    .topbar .ghost{
+      border:1px solid var(--line);
+      padding:10px 16px;border-radius:999px;font-size:13px;
+      transition:border-color .2s ease, background .2s ease;
+    }
+    .topbar .ghost:hover{border-color:var(--accent);background:rgba(168,255,90,.06)}
+    @media(max-width:760px){.nav{display:none}}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 22px;border-radius:999px;
+      font-weight:600;font-size:14px;letter-spacing:-.005em;
+      transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background:var(--accent);color:var(--accentInk);
+      box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 40%,transparent);
+    }
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 14px 40px -10px color-mix(in srgb,var(--accent) 50%,transparent)}
+    .btn-secondary{
+      background:transparent;border:1px solid var(--lineStrong);color:var(--ink);
+    }
+    .btn-secondary:hover{border-color:var(--accent);background:rgba(168,255,90,.05)}
+    .btn .arrow{transition:transform .25s ease}
+    .btn:hover .arrow{transform:translateX(3px)}
+    .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+    /* Hero */
+    .hero{padding:clamp(56px,9vw,120px) 0 clamp(48px,7vw,100px);position:relative}
+    .hero-tag{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 14px;border-radius:999px;
+      border:1px solid var(--line);background:var(--panel);
+      font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+      margin-bottom:32px;
+    }
+    .hero-tag i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+    .hero h1{
+      font-family:var(--serif);
+      font-weight:400;
+      font-size:clamp(48px,8vw,124px);
+      line-height:.92;letter-spacing:-.045em;
+      margin:0 0 28px;max-width:14ch;
+    }
+    .hero h1 em{font-style:italic;color:var(--accent);font-weight:300}
+    .hero h1 .under{position:relative;display:inline-block}
+    .hero h1 .under::after{
+      content:"";position:absolute;left:0;right:0;bottom:.08em;
+      height:.12em;background:var(--accent);border-radius:4px;opacity:.9;
+    }
+    .hero p.lede{
+      max-width:54ch;color:var(--muted);
+      font-size:clamp(15px,1.3vw,19px);line-height:1.6;
+      margin:0 0 40px;
+    }
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:54px}
+    .proof{
+      display:flex;flex-wrap:wrap;gap:36px;
+      padding-top:32px;border-top:1px solid var(--line);
+    }
+    .proof b{font-family:var(--serif);font-size:38px;font-weight:500;letter-spacing:-.04em;display:block;color:var(--ink)}
+    .proof span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+    /* Hero canvas */
+    .hero-stage{
+      position:absolute;
+      right:-40px;top:20px;
+      width:min(560px,46%);height:560px;
+      pointer-events:none;z-index:0;opacity:.95;
+    }
+    @media(max-width:980px){.hero-stage{display:none}}
+    .hero-stage svg{width:100%;height:100%;overflow:visible}
+
+    /* Sections */
+    section{position:relative}
+    .sectionHead{
+      display:flex;align-items:flex-end;justify-content:space-between;
+      gap:40px;margin-bottom:48px;
+    }
+    .sectionHead .label{
+      font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+      display:flex;align-items:center;gap:10px;margin-bottom:14px;font-weight:600;
+    }
+    .sectionHead .label::before{content:"";width:18px;height:1px;background:var(--accent)}
+    .sectionHead h2{
+      font-family:var(--serif);font-weight:400;
+      font-size:clamp(34px,4.5vw,64px);letter-spacing:-.035em;line-height:1;margin:0;
+      max-width:18ch;
+    }
+    .sectionHead p{color:var(--muted);max-width:42ch;line-height:1.6;margin:0}
+
+    /* Marquee */
+    .marquee{
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+      padding:24px 0;margin-bottom:80px;overflow:hidden;
+      -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+    }
+    .marqueeTrack{display:flex;width:max-content;animation:marquee 32s linear infinite;gap:60px}
+    .marqueeTrack span{
+      font-family:var(--serif);font-style:italic;font-weight:300;
+      font-size:28px;color:var(--muted);white-space:nowrap;letter-spacing:-.02em;
+    }
+    .marqueeTrack span i{color:var(--accent);font-style:normal;margin:0 18px}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+
+    /* Services */
+    .services{padding:60px 0 100px}
+    .servicesGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+    .servicesGrid article{
+      background:var(--bg);
+      padding:36px 28px 32px;
+      display:flex;flex-direction:column;min-height:300px;
+      position:relative;
+      transition:background .3s ease;
+    }
+    .servicesGrid article:hover{background:var(--bg2)}
+    .servicesGrid .num{
+      font-family:var(--mono);font-size:11px;color:var(--accent);
+      letter-spacing:.1em;margin-bottom:auto;
+    }
+    .servicesGrid .glyph{
+      width:48px;height:48px;border-radius:12px;
+      background:linear-gradient(135deg,rgba(168,255,90,.16),rgba(122,240,255,.08));
+      border:1px solid var(--line);
+      display:grid;place-items:center;
+      margin-bottom:28px;
+      color:var(--accent);
+    }
+    .servicesGrid h3{
+      font-family:var(--serif);font-weight:500;
+      font-size:24px;letter-spacing:-.02em;margin:0 0 12px;
+    }
+    .servicesGrid p{color:var(--muted);font-size:14px;line-height:1.55;margin:0}
+    .servicesGrid .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px}
+    .servicesGrid .tags span{
+      font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+      padding:5px 10px;border-radius:999px;
+      border:1px solid var(--line);color:var(--muted2);
+    }
+    @media(max-width:980px){.servicesGrid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){.servicesGrid{grid-template-columns:1fr}.servicesGrid article{min-height:240px}}
+
+    /* Process */
+    .process{padding:60px 0 100px}
+    .processGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    @media(max-width:860px){.processGrid{grid-template-columns:1fr}}
+    .step{
+      padding:36px;border:1px solid var(--line);border-radius:20px;
+      background:var(--panel);position:relative;overflow:hidden;
+    }
+    .step::before{
+      content:"";position:absolute;inset:0;
+      background:radial-gradient(circle at 100% 0%,color-mix(in srgb,var(--accent) 8%,transparent),transparent 50%);
+      pointer-events:none;
+    }
+    .step b{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.12em;display:block;margin-bottom:24px}
+    .step h4{font-family:var(--serif);font-weight:500;font-size:26px;letter-spacing:-.02em;margin:0 0 12px}
+    .step p{color:var(--muted);font-size:14px;line-height:1.55;margin:0}
+
+    /* Work */
+    .work{padding:60px 0 100px}
+    .workGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
+    .workGrid .card{
+      grid-column:span 3;
+      border:1px solid var(--line);border-radius:20px;overflow:hidden;
+      background:var(--bg2);
+      display:flex;flex-direction:column;
+      transition:transform .35s ease, border-color .35s ease;
+    }
+    .workGrid .card.wide{grid-column:span 6}
+    .workGrid .card:hover{transform:translateY(-4px);border-color:var(--lineStrong)}
+    .card .thumb{
+      aspect-ratio:16/9;
+      position:relative;overflow:hidden;
+      border-bottom:1px solid var(--line);
+    }
+    .card.wide .thumb{aspect-ratio:21/9}
+    .card .thumb::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 60%,rgba(10,11,16,.4));
+    }
+    .card .meta{padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px;flex:1}
+    .card .meta .row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+    .card .meta .row b{color:var(--accent);font-family:var(--mono);font-weight:500;letter-spacing:.1em}
+    .card h3{font-family:var(--serif);font-weight:500;font-size:28px;letter-spacing:-.025em;margin:0;line-height:1.1}
+    .card p{color:var(--muted);font-size:14px;line-height:1.55;margin:0}
+    .card .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:auto}
+    .card .stats div{background:var(--bg);padding:14px 12px}
+    .card .stats b{display:block;font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:-.03em;color:var(--ink)}
+    .card .stats span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    @media(max-width:860px){.workGrid{grid-template-columns:1fr}.workGrid .card,.workGrid .card.wide{grid-column:1}}
+
+    /* Thumbnails (CSS art) */
+    /* Real product photos in case-study cards */
+    .thumb img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .5s ease;
+    }
+    .card:hover .thumb img{transform:scale(1.04)}
+
+    /* Thumbnails (CSS art) */
+    .thumb-a{
+      background:
+        radial-gradient(circle at 75% 30%, color-mix(in srgb,var(--accent2) 50%,transparent), transparent 40%),
+        linear-gradient(135deg,#1a2236,#0a0b10);
+    }
+    .thumb-a::before{
+      content:"";position:absolute;left:10%;top:55%;width:60%;height:2px;
+      background:linear-gradient(90deg,transparent,var(--accent),transparent);
+      box-shadow:0 0 20px var(--accent);
+    }
+    .thumb-a::after{
+      content:"";position:absolute;left:50%;top:55%;width:80px;height:80px;
+      transform:translate(-50%,-50%);border-radius:50%;
+      background:radial-gradient(circle,var(--accent2),transparent 70%);
+      opacity:.5;
+    }
+    .thumb-b{
+      background:linear-gradient(135deg,#1c1326,#0a0b10);
+    }
+    .thumb-b::before{
+      content:"";position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(168,255,90,.18) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(168,255,90,.18) 1px,transparent 1px);
+      background-size:40px 40px;
+      mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 70%);
+    }
+    .thumb-c{
+      background:linear-gradient(135deg,#0a1e1a,#0a0b10);
+    }
+    .thumb-c::before{
+      content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:60%;height:60%;
+      background:conic-gradient(from 0deg,var(--accent),var(--accent2),var(--accent));
+      border-radius:50%;filter:blur(40px);opacity:.5;
+    }
+    .thumb-c::after{
+      content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:50%;height:80%;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),transparent);
+      border-radius:50% 50% 0 0;
+      border:1px solid var(--lineStrong);
+      border-bottom:0;
+    }
+    .work-label{
+      position:absolute;left:20px;bottom:18px;z-index:2;
+      font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--ink);
+      padding:6px 10px;border-radius:6px;background:rgba(10,11,16,.6);border:1px solid var(--line);
+      backdrop-filter:blur(10px);
+    }
+
+    /* Wedding placeholders — soft ivory + blush */
+    .thumb-wedding{
+      background:
+        radial-gradient(circle at 50% 30%, color-mix(in srgb,#f0d9d2 28%,transparent), transparent 55%),
+        linear-gradient(160deg,#f7f1ea,#e8dccf);
+    }
+    .thumb-wedding::before{
+      content:"";position:absolute;left:50%;top:55%;width:0;height:0;
+      transform:translate(-50%,-50%);
+      border-left:50px solid transparent;
+      border-right:50px solid transparent;
+      border-bottom:78px solid rgba(176,132,112,.18);
+      filter:blur(.5px);
+    }
+    .thumb-wedding::after{
+      content:"";position:absolute;left:50%;top:55%;width:8px;height:8px;
+      transform:translate(-50%,-50%);border-radius:50%;
+      background:rgba(176,132,112,.45);
+      box-shadow:0 0 16px rgba(176,132,112,.4);
+    }
+    .thumb .work-label.soon{
+      background:rgba(247,241,234,.85);
+      border-color:rgba(176,132,112,.35);
+      color:#7a5a4a;
+    }
+
+    /* Testimonials */
+    .testimonials{padding:60px 0 100px}
+    .testGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    @media(max-width:760px){.testGrid{grid-template-columns:1fr}}
+    .quote{
+      padding:36px;border:1px solid var(--line);border-radius:20px;
+      background:var(--panel);position:relative;
+    }
+    .quote::before{
+      content:"\201C";
+      position:absolute;top:8px;right:28px;
+      font-family:var(--serif);font-size:96px;line-height:1;
+      color:var(--accent);opacity:.35;
+    }
+    .quote p{
+      font-family:var(--serif);font-weight:400;
+      font-size:22px;line-height:1.45;letter-spacing:-.015em;
+      margin:0 0 28px;color:var(--ink);
+    }
+    .who{display:flex;align-items:center;gap:14px;margin-top:auto}
+    .who .avatar{
+      width:44px;height:44px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:grid;place-items:center;color:var(--accentInk);
+      font-weight:700;font-size:15px;
+    }
+    .who b{font-size:14px;display:block}
+    .who span{font-size:12px;color:var(--muted)}
+
+    /* Contact */
+    .contact{padding:80px 0 0;position:relative}
+    .contactWrap{
+      border:1px solid var(--line);border-radius:28px;overflow:hidden;
+      background:linear-gradient(180deg,var(--panel),transparent);
+      position:relative;
+    }
+    .contactWrap::before{
+      content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(circle at 90% 0%, color-mix(in srgb,var(--accent) 14%,transparent), transparent 50%),
+        radial-gradient(circle at 0% 100%, color-mix(in srgb,var(--accent2) 10%,transparent), transparent 50%);
+      pointer-events:none;
+    }
+    .contactInner{
+      display:grid;grid-template-columns:1fr 1fr;gap:60px;
+      padding:clamp(40px,6vw,80px);position:relative;
+    }
+    @media(max-width:860px){.contactInner{grid-template-columns:1fr;gap:40px;padding:32px}}
+    .contactLeft h2{
+      font-family:var(--serif);font-weight:400;
+      font-size:clamp(34px,4.5vw,60px);letter-spacing:-.035em;line-height:1;margin:0 0 24px;
+    }
+    .contactLeft h2 em{font-style:italic;color:var(--accent);font-weight:300}
+    .contactLeft p{color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 36px;max-width:44ch}
+    .contactInfo{display:flex;flex-direction:column;gap:18px;margin-top:36px;padding-top:36px;border-top:1px solid var(--line)}
+    .contactInfo a{display:flex;align-items:center;gap:14px;color:var(--ink);font-size:14px;transition:color .2s ease}
+    .contactInfo a:hover{color:var(--accent)}
+    .contactInfo .ico{
+      width:36px;height:36px;border-radius:10px;border:1px solid var(--line);
+      display:grid;place-items:center;color:var(--accent);
+    }
+    .contactInfo span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block}
+
+    .form{display:flex;flex-direction:column;gap:18px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:520px){.row{grid-template-columns:1fr}}
+    textarea{min-height:120px;resize:vertical;font-family:inherit}
+    .form .btn-primary{justify-content:center;margin-top:8px;width:100%}
+    .form .btn-primary:focus-visible{outline-offset:4px}
+    .formSuccess{
+      padding:18px;border-radius:12px;background:rgba(168,255,90,.08);
+      border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+      color:var(--accent);font-size:14px;display:none;
+    }
+    .formSuccess.show{display:block}
+
+    /* Footer */
+    .footer{
+      margin-top:80px;padding:40px 0 0;
+      border-top:1px solid var(--line);
+      display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+      font-size:12px;color:var(--muted);
+    }
+    .footer .links{display:flex;gap:20px}
+    .footer a:hover{color:var(--accent)}
+
+    /* Reveal animation */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.in{opacity:1;transform:translateY(0)}
+    .reveal.d1{transition-delay:.08s}
+    .reveal.d2{transition-delay:.16s}
+    .reveal.d3{transition-delay:.24s}
+    .reveal.d4{transition-delay:.32s}
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .marqueeTrack{animation:none}
+      .reveal{opacity:1;transform:none;transition:none}
+      .orbit-spin{animation:none}
+    }
+
+    /* Slow continuous rotation for the hero orbital graphic */
+    .orbit-spin{
+      transform-origin:280px 280px;
+      transform-box:view-box;
+      animation:orbitSpin 30s linear infinite;
+    }
+    @keyframes orbitSpin{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+
+    <!-- Top bar -->
+    <nav class="topbar" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Fasih">
+        <i aria-hidden="true"></i>
+        <span>Fasih</span>
+        <small>Web · Design</small>
+      </a>
+      <div class="nav" role="navigation">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="ghost" href="#contact">Book a call →</a>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero" id="top">
+      <div class="hero-stage" aria-hidden="true">
+        <svg viewBox="0 0 560 560" fill="none">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#a8ff5a" stop-opacity=".7"/>
+              <stop offset="60%" stop-color="#7af0ff" stop-opacity=".1"/>
+              <stop offset="100%" stop-color="#0a0b10" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#a8ff5a"/>
+              <stop offset="100%" stop-color="#7af0ff"/>
+            </linearGradient>
+          </defs>
+          <circle cx="280" cy="280" r="220" fill="url(#glow)"/>
+          <g class="orbit-spin" style="transform-origin:280px 280px">
+            <g stroke="url(#ring)" stroke-width="1" fill="none" opacity=".5">
+              <ellipse cx="280" cy="280" rx="220" ry="80"/>
+              <ellipse cx="280" cy="280" rx="220" ry="80" transform="rotate(60 280 280)"/>
+              <ellipse cx="280" cy="280" rx="220" ry="80" transform="rotate(-60 280 280)"/>
+              <circle cx="280" cy="280" r="160"/>
+              <circle cx="280" cy="280" r="100"/>
+            </g>
+            <g fill="#a8ff5a">
+              <circle cx="280" cy="60" r="4"/>
+              <circle cx="500" cy="280" r="3"/>
+              <circle cx="60" cy="280" r="3"/>
+              <circle cx="430" cy="130" r="2"/>
+              <circle cx="130" cy="430" r="2"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <span class="hero-tag reveal"><i aria-hidden="true"></i> Booking Q3 · 2 spots left</span>
+      <h1 class="reveal d1">Websites that <em>ship</em>, scale, and sell.</h1>
+      <p class="lede reveal d2">I'm Fasih — a freelance designer &amp; engineer. I build custom marketing sites, product UIs, and storefronts for founders and product teams who care about speed, polish, and on-brand craft.</p>
+
+      <div class="hero-actions reveal d3">
+        <a class="btn btn-primary" href="#contact">Start a project <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-secondary" href="#work">See selected work</a>
+      </div>
+
+      <div class="proof reveal d4">
+        <div><b>48+</b><span>Projects shipped</span></div>
+        <div><b>6 yrs</b><span>Design + engineering</span></div>
+        <div><b>4.9/5</b><span>Client rating</span></div>
+        <div><b>14 days</b><span>Avg. launch time</span></div>
+      </div>
+    </header>
+
+    <!-- Marquee -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marqueeTrack">
+        <span>Marketing sites <i>·</i></span>
+        <span>Product UI <i>·</i></span>
+        <span>Shopify &amp; headless commerce <i>·</i></span>
+        <span>Design systems <i>·</i></span>
+        <span>Web apps <i>·</i></span>
+        <span>Webflow → custom <i>·</i></span>
+        <span>Marketing sites <i>·</i></span>
+        <span>Product UI <i>·</i></span>
+        <span>Shopify &amp; headless commerce <i>·</i></span>
+        <span>Design systems <i>·</i></span>
+        <span>Web apps <i>·</i></span>
+        <span>Webflow → custom <i>·</i></span>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section class="services" id="services">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="label">What I do</div>
+          <h2>Services built around outcomes, not hours.</h2>
+        </div>
+        <p>Engagements are scoped around the result you need. Pick a focus area, or bundle them — most clients pair design and build.</p>
+      </div>
+
+      <div class="servicesGrid">
+        <article class="reveal">
+          <span class="num">01 / 04</span>
+          <div class="glyph" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M7 14h4"/></svg>
+          </div>
+          <h3>Marketing sites</h3>
+          <p>High-converting landing pages and brand sites that load fast, rank, and feel unmistakably yours.</p>
+          <div class="tags"><span>Next.js</span><span>Astro</span><span>CMS</span></div>
+        </article>
+
+        <article class="reveal d1">
+          <span class="num">02 / 04</span>
+          <div class="glyph" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h16"/><circle cx="18" cy="12" r="2"/></svg>
+          </div>
+          <h3>Product UI</h3>
+          <p>Dashboard, settings, and onboarding flows that turn first-time visitors into power users.</p>
+          <div class="tags"><span>Design system</span><span>Figma</span><span>React</span></div>
+        </article>
+
+        <article class="reveal d2">
+          <span class="num">03 / 04</span>
+          <div class="glyph" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16l-2 11H6L4 8Z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg>
+          </div>
+          <h3>Headless commerce</h3>
+          <p>Shopify storefronts, custom carts, and Stripe-powered checkouts that convert on mobile and desktop.</p>
+          <div class="tags"><span>Shopify</span><span>Stripe</span><span>Headless</span></div>
+        </article>
+
+        <article class="reveal d3">
+          <span class="num">04 / 04</span>
+          <div class="glyph" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m4 12 4-8 4 6 4-10 4 12"/><path d="M4 20h16"/></svg>
+          </div>
+          <h3>Performance &amp; SEO</h3>
+          <p>Speed audits, Core Web Vitals fixes, and content foundations so the site you ship keeps performing.</p>
+          <div class="tags"><span>Lighthouse</span><span>CWV</span><span>Schema</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="process">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="label">How it works</div>
+          <h2>Three steps. No surprises.</h2>
+        </div>
+        <p>A predictable rhythm that ships in weeks, not quarters — with weekly demos so you always know what's next.</p>
+      </div>
+
+      <div class="processGrid">
+        <article class="step reveal">
+          <b>01 · Discovery</b>
+          <h4>Brief, audience, outcome.</h4>
+          <p>A 30-minute call to pin down the goal, audience, and success metric. I send back a written brief + a fixed quote within 48 hours.</p>
+        </article>
+        <article class="step reveal d1">
+          <b>02 · Design + build</b>
+          <h4>Ship in two-week sprints.</h4>
+          <p>Design and engineering run in parallel. You see live staging URLs every Friday — no big reveal, no deck-driven handoff.</p>
+        </article>
+        <article class="step reveal d2">
+          <b>03 · Launch + care</b>
+          <h4>Go live, then improve.</h4>
+          <p>Deployment, analytics, and a 30-day support window. Optional monthly care plan for experiments and updates.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Past Work -->
+    <section class="work" id="work">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="label">Selected work</div>
+          <h2>Recent projects &amp; the numbers behind them.</h2>
+        </div>
+        <p>Each engagement is a partnership — here's a look at four recent launches and the results they moved.</p>
+      </div>
+
+      <div class="workGrid">
+        <article class="card wide reveal">
+          <div class="thumb" aria-hidden="true">
+            <img src="./assets/tereliye-pen.jpeg" alt="" loading="lazy">
+            <span class="work-label">E-commerce · Gifts</span>
+          </div>
+          <div class="meta">
+            <div class="row"><span>Tereliye Gifts · 2026</span><b>Custom engraved-gift storefront</b></div>
+            <h3>Premium laser-engraved gifts, made in Rawalpindi.</h3>
+            <p>A custom storefront for personalized pens, rings, necklaces, and bottles — with a live custom-gift studio and WhatsApp-first ordering. Cream-and-gold brand system built from scratch.</p>
+            <div class="stats">
+              <div><b>14</b><span>Products</span></div>
+              <div><b>PKR&nbsp;1.2–3.5k</b><span>Price range</span></div>
+              <div><b>All&nbsp;Pakistan</b><span>Delivery</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="thumb" aria-hidden="true">
+            <img src="./assets/aroma-velvet.jpeg" alt="" loading="lazy">
+            <span class="work-label">E-commerce · Perfume</span>
+          </div>
+          <div class="meta">
+            <div class="row"><span>Aroma Luxury · 2026</span><b>Fragrance storefront & cart</b></div>
+            <h3>A signature-scent shop with editorial polish.</h3>
+            <p>Burgundy-and-gold storefront with three collections (Man · Women · Unisex), a slide-in cart drawer, dark mode, and a try-it spray micro-interaction on every product.</p>
+            <div class="stats">
+              <div><b>9</b><span>Fragrances</span></div>
+              <div><b>3</b><span>Collections</span></div>
+              <div><b>RS&nbsp;2,000</b><span>From</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal d1">
+          <div class="thumb thumb-b" aria-hidden="true"><span class="work-label">SaaS · Product UI</span></div>
+          <div class="meta">
+            <div class="row"><span>Forge · 2025</span><b>Onboarding redesign</b></div>
+            <h3>An onboarding flow that just works.</h3>
+            <p>Redesigned a 7-step setup into a guided, resumable flow with progress saved across sessions.</p>
+            <div class="stats">
+              <div><b>+47%</b><span>Activation</span></div>
+              <div><b>−51%</b><span>Drop-off</span></div>
+              <div><b>3 wks</b><span>Ship</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="thumb thumb-wedding" aria-hidden="true"><span class="work-label soon">Coming soon</span></div>
+          <div class="meta">
+            <div class="row"><span>Wedding venue · 2026</span><b>Venue microsite</b></div>
+            <h3>A wedding venue site, currently in progress.</h3>
+            <p>Story-driven marketing site for a boutique wedding venue — booking flow, gallery, and vendor list. Case study will be added once the build ships.</p>
+            <div class="stats">
+              <div><b>—</b><span>Status</span></div>
+              <div><b>—</b><span>Launch</span></div>
+              <div><b>—</b><span>Outcome</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal d1">
+          <div class="thumb thumb-wedding" aria-hidden="true"><span class="work-label soon">Coming soon</span></div>
+          <div class="meta">
+            <div class="row"><span>Wedding planner · 2026</span><b>Planner site & inquiry flow</b></div>
+            <h3>A wedding planner site, currently in progress.</h3>
+            <p>Editorial site for a wedding planner — services, portfolio, and an inquiry form that funnels to email. Case study will be added once the build ships.</p>
+            <div class="stats">
+              <div><b>—</b><span>Status</span></div>
+              <div><b>—</b><span>Launch</span></div>
+              <div><b>—</b><span>Outcome</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="label">Kind words</div>
+          <h2>What clients say after launch.</h2>
+        </div>
+        <p>Honest feedback from teams I've shipped with — in their words, not mine.</p>
+      </div>
+
+      <div class="testGrid">
+        <article class="quote reveal">
+          <p>Fasih shipped our new site in three weeks and it looks like it took three months. Our marketing team now moves faster than our roadmap.</p>
+          <div class="who">
+            <div class="avatar" aria-hidden="true">JK</div>
+            <div><b>Jordan Kim</b><span>Head of Marketing, Lumen Pay</span></div>
+          </div>
+        </article>
+        <article class="quote reveal d1">
+          <p>The best hire we made wasn't a hire at all — it was a two-week engagement. Crisp design, fast code, zero drama.</p>
+          <div class="who">
+            <div class="avatar" aria-hidden="true">SA</div>
+            <div><b>Sam Aldridge</b><span>Founder, Forge</span></div>
+          </div>
+        </article>
+        <article class="quote reveal d2">
+          <p>He listened more than he pitched. The result is a storefront that finally feels like our brand, not our platform.</p>
+          <div class="who">
+            <div class="avatar" aria-hidden="true">RL</div>
+            <div><b>Rae Liu</b><span>CEO, North Goods</span></div>
+          </div>
+        </article>
+        <article class="quote reveal d3">
+          <p>Conversion lifted the week we launched — and kept lifting. The site earns its keep every month.</p>
+          <div class="who">
+            <div class="avatar" aria-hidden="true">TM</div>
+            <div><b>Theo Marin</b><span>CMO, Pixel</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <div class="contactWrap reveal">
+        <div class="contactInner">
+          <div class="contactLeft">
+            <h2>Let's build the site your <em>team</em> is proud of.</h2>
+            <p>Tell me a bit about the project. You'll get a reply within one business day with a written scope, timeline, and a fixed quote — no commitment required.</p>
+
+            <div class="contactInfo">
+              <a href="mailto:hello@fasih.co">
+                <span class="ico" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></svg>
+                </span>
+                <span>Email</span>
+                hello@fasih.co
+              </a>
+              <a href="https://cal.com" rel="noopener">
+                <span class="ico" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+                </span>
+                <span>Schedule</span>
+                Book a 30-min intro call
+              </a>
+              <a href="#">
+                <span class="ico" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
+                </span>
+                <span>Location</span>
+                Brooklyn, NY · Remote worldwide
+              </a>
+            </div>
+          </div>
+
+          <form class="form" id="contactForm" novalidate>
+            <div class="row">
+              <div>
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" required autocomplete="name" placeholder="Your name">
+              </div>
+              <div>
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" autocomplete="organization" placeholder="Company (optional)">
+              </div>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com">
+            </div>
+            <div>
+              <label for="budget">Budget range</label>
+              <input id="budget" name="budget" type="text" placeholder="e.g. $10–25k">
+            </div>
+            <div>
+              <label for="message">About the project</label>
+              <textarea id="message" name="message" required placeholder="What are you building? Who is it for? When do you need it live?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send the brief <span class="arrow" aria-hidden="true">→</span></button>
+            <div class="formSuccess" id="formSuccess" role="status">Thanks — your brief is in. I'll reply within one business day.</div>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>© 2026 Fasih · Built with care, not frameworks.</div>
+        <div class="links">
+          <a href="#">Twitter</a>
+          <a href="#">Dribbble</a>
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Reveal on scroll
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reveals = document.querySelectorAll('.reveal');
+    if (!reduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach((el) => io.observe(el));
+    } else {
+      reveals.forEach((el) => el.classList.add('in'));
+    }
+
+    // Form submit (demo only)
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        success.classList.add('show');
+        form.reset();
+        setTimeout(() => success.classList.remove('show'), 6000);
+      });
+    }
+  </script>
+</body>
+</html>
